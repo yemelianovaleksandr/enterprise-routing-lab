@@ -1,0 +1,56 @@
+
+hostname Firewall
+!
+interface GigabitEthernet0/0
+ description OUTSIDE (toward ISP)
+ ip address 203.0.113.2 255.255.255.0
+ ip nat outside
+ zone-member security OUTSIDE
+ no shutdown
+!
+interface GigabitEthernet0/1
+ description INSIDE (LAN)
+ ip address 192.168.10.254 255.255.255.0
+ ip nat inside
+ zone-member security INSIDE
+ no shutdown
+!
+interface GigabitEthernet0/2
+ description DMZ (Public Server)
+ ip address 192.168.99.1 255.255.255.0
+ ip nat inside
+ zone-member security DMZ
+ no shutdown
+!
+ip nat inside source list NAT_INS interface GigabitEthernet0/0 overload
+access-list NAT_INS permit 192.168.0.0 0.0.255.255
+!
+ip access-list extended DMZ_INBOUND
+ permit tcp any host 192.168.99.10 eq 80
+ permit tcp any host 192.168.99.10 eq 443
+ deny ip any any log
+!
+zone security INSIDE
+zone security OUTSIDE
+zone security DMZ
+!
+class-map type inspect match-any CM_INSIDE
+ match access-group name DMZ_INBOUND
+!
+policy-map type inspect PM_FW_POLICY
+ class type inspect CM_INSIDE
+  inspect
+!
+zone-pair security ZP_INSIDE_OUTSIDE source INSIDE destination OUTSIDE
+ service-policy type inspect PM_FW_POLICY
+!
+zone-pair security ZP_OUTSIDE_INSIDE source OUTSIDE destination INSIDE
+ service-policy type inspect PM_FW_POLICY
+!
+zone-pair security ZP_DMZ_OUTSIDE source DMZ destination OUTSIDE
+ service-policy type inspect PM_FW_POLICY
+!
+zone-pair security ZP_INSIDE_DMZ source INSIDE destination DMZ
+ service-policy type inspect PM_FW_POLICY
+!
+end

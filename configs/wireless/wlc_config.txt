@@ -1,0 +1,27 @@
+
+hostname WLC1
+!
+interface vlan1
+ ip address 192.168.100.10 255.255.255.0
+!
+interface GigabitEthernet0/0
+ description Connection to LAN
+ ip address 192.168.100.2 255.255.255.0
+!
+ip dhcp pool AP-MGMT
+ network 192.168.100.0 255.255.255.0
+ default-router 192.168.100.1
+ option 43 ascii "241"
+!
+wireless management interface vlan1
+!
+ssid ENTERPRISE-WIFI
+ authentication open
+ authentication key-management wpa version 2
+ wpa-psk ascii 0 CiscoWifi123
+!
+ap policy local-mode
+!
+snmp-server community public RO
+!
+end

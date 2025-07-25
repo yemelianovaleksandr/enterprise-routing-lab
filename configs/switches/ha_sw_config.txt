@@ -1,0 +1,32 @@
+
+hostname HA_SW
+!
+interface Vlan10
+ ip address 192.168.10.2 255.255.255.0
+ no shutdown
+!
+interface Vlan20
+ ip address 192.168.20.2 255.255.255.0
+ no shutdown
+!
+interface GigabitEthernet0/1
+ switchport access vlan 10
+ switchport mode access
+!
+interface GigabitEthernet0/2
+ switchport access vlan 20
+ switchport mode access
+!
+standby 10 ip 192.168.10.254
+standby 10 priority 110
+standby 10 preempt
+!
+standby 20 ip 192.168.20.254
+standby 20 priority 110
+standby 20 preempt
+!
+ip routing
+!
+spanning-tree mode rapid-pvst
+!
+end

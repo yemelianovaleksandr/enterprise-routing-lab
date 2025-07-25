@@ -1,0 +1,41 @@
+
+hostname Branch_R2
+!
+interface GigabitEthernet0/0
+ description Link to Core_R3
+ ip address 10.1.2.2 255.255.255.0
+ no shutdown
+!
+interface GigabitEthernet0/1
+ description LAN Interface (Inside)
+ ip address 192.168.20.1 255.255.255.0
+ ip nat inside
+ no shutdown
+!
+interface GigabitEthernet0/2
+ description Link to WAN (Outside)
+ ip address 203.0.113.2 255.255.255.0
+ ip nat outside
+ no shutdown
+!
+ip nat inside source list 1 interface GigabitEthernet0/2 overload
+access-list 1 permit 192.168.20.0 0.0.0.255
+!
+ip route 0.0.0.0 0.0.0.0 203.0.113.1
+!
+ip domain-name branch.local
+crypto key generate rsa modulus 2048
+ip ssh version 2
+username admin privilege 15 secret cisco123
+!
+line vty 0 4
+ login local
+ transport input ssh
+!
+snmp-server community public RO
+snmp-server location Branch_R2
+snmp-server contact admin@enterprise.local
+!
+banner motd ^CUnauthorized access is prohibited.^C
+!
+end

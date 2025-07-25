@@ -1,0 +1,58 @@
+
+! === Secure Access ===
+service password-encryption
+no ip http server
+no ip http secure-server
+!
+username admin secret Cisco123!
+!
+line vty 0 4
+ transport input ssh
+ login local
+!
+ip domain-name enterprise.local
+crypto key generate rsa modulus 2048
+ip ssh version 2
+!
+! === SNMP (Restricted) ===
+snmp-server community MONITORING RO 10
+snmp-server location DC
+snmp-server contact admin@enterprise.local
+!
+! === uRPF (Reverse Path Forwarding) ===
+interface GigabitEthernet0/1
+ ip verify unicast source reachable-via rx
+!
+! === ACL Example: Allow specific services ===
+ip access-list extended PERMIT_TRAFFIC
+ permit ip 192.168.0.0 0.0.255.255 any
+ deny ip any any log
+!
+interface GigabitEthernet0/1
+ ip access-group PERMIT_TRAFFIC in
+!
+! === CoPP (Control Plane Policing) ===
+class-map match-any MGMT-TRAFFIC
+ match access-group name MGMT-ACL
+!
+policy-map CONTROL-PLANE-POLICY
+ class MGMT-TRAFFIC
+  police 32000 8000 conform-action transmit exceed-action drop violate-action drop
+!
+control-plane
+ service-policy input CONTROL-PLANE-POLICY
+!
+ip access-list extended MGMT-ACL
+ permit tcp any any eq ssh
+ permit udp any any eq snmp
+ permit udp any any eq ntp
+ deny   ip any any log
+!
+! === Logging ===
+logging host 192.168.100.10
+logging trap warnings
+!
+! === Time ===
+ntp server 192.168.100.10
+!
+end

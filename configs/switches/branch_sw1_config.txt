@@ -1,0 +1,17 @@
+
+hostname Branch_SW1
+!
+vtp domain ENTERPRISE
+vtp mode transparent
+!
+interface GigabitEthernet0/1
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+!
+interface range GigabitEthernet0/2 - 4
+ switchport mode access
+ switchport access vlan 20
+!
+spanning-tree mode rapid-pvst
+!
+end

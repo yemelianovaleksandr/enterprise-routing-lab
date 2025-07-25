@@ -1,0 +1,11 @@
+
+hostname AP1
+!
+interface GigabitEthernet0/0
+ description To WLC
+ dhcp client
+!
+capwap ap ip address dhcp
+capwap ap controller ip address 192.168.100.10
+!
+end
