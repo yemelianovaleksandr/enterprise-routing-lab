@@ -1,11 +1,11 @@
 
-# 🏢 Enterprise Routing Lab (Cisco CCNP ENARSI)
+# Enterprise Routing Lab (Cisco CCNP ENARSI)
 
 This is a comprehensive project that consolidates over 100+ labs from Cisco's CCNP ENARSI curriculum into a unified, simulated enterprise network. Designed for Cisco Modeling Labs (CML), this lab is ideal for practicing routing, security, monitoring, and wireless implementations in an enterprise setting.
 
 ---
 
-## 🖧 Network Topology
+## Network Topology
 
 ![Topology](topology/topology.png)
 
@@ -20,7 +20,7 @@ Includes:
 
 ---
 
-## ⚙️ Technologies Covered
+## Technologies Covered
 
 - ✅ Static & Dynamic Routing (EIGRP, OSPFv2/v3, BGP)
 - ✅ Route Redistribution, Summarization, Path Manipulation
@@ -34,7 +34,7 @@ Includes:
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 configs/
@@ -52,7 +52,7 @@ scripts/
 
 ---
 
-## 🛠️ How to Use
+## How to Use
 
 1. Import the topology into Cisco Modeling Labs (CML)
 2. Apply configuration files to devices
@@ -61,13 +61,13 @@ scripts/
 
 ---
 
-## 👤 Author
+## Author
 
 **Oleksandr Yemelianov**  
-🔗 [LinkedIn Profile](https://www.linkedin.com/in/yemelianovaleksandr)
+[LinkedIn Profile](https://www.linkedin.com/in/yemelianovaleksandr)
 
 ---
 
-## 📜 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
